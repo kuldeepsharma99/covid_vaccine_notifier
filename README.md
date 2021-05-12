@@ -11,7 +11,7 @@ vaccine.age=18
 vaccine.email.to=placeholder@email.com
 # Email address( Only Gmail is supported ) from where email will be triggered 
 spring.mail.username=placeholder@gmail.com
-# Email Password. Look at Readme file to enable login from code in your gmail account. 
+# Email Password.
 spring.mail.password=placeholder
 
 To Enable login to your gmail acccount from code you will need to disable a security flag your gmail account used for property "spring.mail.username".
