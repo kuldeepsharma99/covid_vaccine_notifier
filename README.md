@@ -3,8 +3,8 @@ FOR INDIA: checks the COVID vaccine availability in a PIN code and notifies thro
 
 Before running the code below properties needs to be updated in the application.properties file. 
 
-# Pincode of your Area
-vaccine.pincode=110024
+# Pincode(s) of your Area
+vaccine.pincode={110024,110025}
 # Mimum Age Limit. Currently, accepted values are 18 and 45
 vaccine.age=18
 # Email address where notification is needed. 
