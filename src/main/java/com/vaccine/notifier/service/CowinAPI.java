@@ -20,16 +20,13 @@ import com.vaccine.notifier.model.Root;
 @Service
 public class CowinAPI {
 
-	@Value("${vaccine.pincode}")
-	String pincode;
-	
 	@Autowired
 	RestTemplate restTemplate;
 	
 	@Value("${vaccine.baseuri}")
 	String baseUri;
 
-	public Root getResponse() {
+	public Root getResponse(String pincode) {
 		Date currentDate= new Date();
 		SimpleDateFormat df = new SimpleDateFormat("dd-MM-YYYY");
 		

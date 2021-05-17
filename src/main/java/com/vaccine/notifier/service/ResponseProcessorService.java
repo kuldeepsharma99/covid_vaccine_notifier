@@ -20,6 +20,9 @@ public class ResponseProcessorService {
 	@Value("${vaccine.age}")
 	Integer minimum_age;
 	
+	@Value("#{${vaccine.pincode}}")
+	List<String> pincodes;
+	
 	@Autowired
 	EmailService emailService;
 
@@ -28,19 +31,19 @@ public class ResponseProcessorService {
 	public static final String BOLD_CLOSE = "</b>";
 
 	public void getVaccineNotification() {
-		Root root = cowinAPI.getResponse();
+		List<Root> roots = pincodes.stream().map(i->cowinAPI.getResponse(i)).collect(Collectors.toList());
+		
+		List<Center> centers = roots.stream().flatMap(i->i.getCenters().stream()).collect(Collectors.toList());
 
 		StringBuilder sb = new StringBuilder();
 
-		for (Center center : root.getCenters()) {
+		for (Center center : centers) {
 			List<Session> sessions = center.getSessions().stream()
 					.filter(i -> i.getMin_age_limit() == minimum_age)
 					.filter(i -> i.getAvailable_capacity() > 0)
 					.collect(Collectors.toList());
 
-			if(sessions.isEmpty()) {
-				sb.append("<H3>No Vaccine available for Age Group "+minimum_age+"</H3>");
-			}else {
+			if(!sessions.isEmpty()) {
 				sb.append("<H3>Vaccine available at below centers for Age Group "+minimum_age+"</H3>");
 				boolean printHeaderOnlyOneTime = true;
 				for (Session session : sessions) {
@@ -61,11 +64,11 @@ public class ResponseProcessorService {
 		}
 
 		try {
-			String message = sb.toString();
-			if(!message.contains("No Vaccine available")) {
+			if(!sb.isEmpty()) {
 				emailService.sendEmail(sb.toString());
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

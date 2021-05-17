@@ -30,5 +30,7 @@ public class EmailService {
         helper.setText(message, true);
 
         javaMailSender.send(msg);
+        
+        System.out.println("Email Sent");
 	}
 }
