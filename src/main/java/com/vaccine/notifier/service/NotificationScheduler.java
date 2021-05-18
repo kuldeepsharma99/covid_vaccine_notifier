@@ -11,11 +11,15 @@ public class NotificationScheduler {
 
 	@Autowired
 	ResponseProcessorService responseProcessorService;
-	
-	@Scheduled(fixedRate = 600000)
-	public void checkVaccineSlots() {
-		responseProcessorService.getVaccineNotification();
-		
-		System.out.println("Vaccine Availability Check Performed At "+new Date());
+
+	@Scheduled(fixedDelay = 600000)
+	public void checkVaccineSlots() throws InterruptedException {
+		System.out.println("Vaccine Availability Check Performed At " + new Date());
+		if (responseProcessorService.getVaccineNotification()) {
+			System.out.println("Email Sent. Will check now after 20 minutes");
+			Thread.sleep(20 * 60000);
+			System.out.println("Performing new Availability check");
+		}
+
 	}
 }
